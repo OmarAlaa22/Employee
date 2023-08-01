@@ -1,0 +1,180 @@
+﻿@model Employee
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="row">
+
+        <form  asp-action="AddEmployee" class="col-md-12 row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model != null)
+        {
+            <input type="hidden" asp-for="Id" />
+        }
+               
+            <div class="form-group col-md-6 mb-3">
+                <label asp-for="Name" class="control-label mb-1 fw-bold text-pr"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="Salary" class="control-label mb-1 fw-bold"></label>
+                <input asp-for="Salary" class="form-control" type="text" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="Age" class="control-label mb-1 fw-bold"></label>
+                <input asp-for="Age" class="form-control" type="text" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="SSN" class="control-label mb-1 fw-bold"></label>
+                <input asp-for="SSN" class="form-control" type="text" />
+                <span asp-validation-for="SSN" class="text-danger"></span>
+            </div>
+
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="Gender" class="control-label mb-1 fw-bold">Gender</label>
+            <select asp-for="Gender" class="form-select">
+                <option selected disabled>Selecte Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+        
+    
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="State" class="control-label mb-1 fw-bold">State</label>
+            <select asp-for="State" class="form-select mb-1">
+                <option selected disabled>Select Marital Status</option>
+                <option >Married</option>
+                <option>Unmarried</option>
+                <option >Engaged</option>
+            </select>
+            <span asp-validation-for="State" class="text-danger"></span>
+        </div>
+    
+
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="GovernorateId" class="control-label mb-1 fw-bold">Governorate</label>
+            <select asp-for="GovernorateId" class="form-select" id="governate">
+                <option selected disabled>Select Governate</option>
+                @foreach (var item in ViewBag.Governate)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+            <span asp-validation-for="GovernorateId" class="text-danger"></span>
+        </div>
+   
+        
+
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="CityId" class="control-label mb-1 fw-bold">City</label>
+            <select asp-for="CityId" class="form-select" id="PickUpCity">
+                <option selected>Selecte City</option>
+                @if (Model != null)
+                {
+                    <option value="@Model.City.Id">@Model.City.Name</option>
+                }
+               
+            </select>
+            <span asp-validation-for="CityId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-6 mb-3">
+            <label asp-for="centerId" class="control-label mb-1 fw-bold">Center</label>
+            <select asp-for="centerId" class="form-select" id="PickUpCenter">
+                <option selected>Selecte Center</option>
+                @if (Model != null)
+                {
+                    <option value="@Model.center.Id">@Model.center.Name</option>
+
+                }
+            </select>
+            <span asp-validation-for="centerId" class="text-danger"></span>
+        </div>
+
+        
+
+
+            <div class="form-group col-md-12 text-end">
+                <input type="submit" value="Save User Details" class="btn btn-primary" />
+            </div>
+            
+        </form>
+
+</div>
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#governate').on('change', function () {
+               
+                var City = $("#PickUpCity");
+                var center = $("#PickUpCenter");
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetCities","City")",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify($(this).val()),
+                    success: function (data) {
+                        debugger;
+                        City.empty();
+                        center.empty().append($('<option>', {
+                            value: '',
+                            text: 'Select Center'
+                        }));
+                        City.append($('<option>', {
+                            value: '',
+                            text: 'Select City'
+                        }));
+                        $.each(data, function (index, city) {
+                            City.append("<option value='" + city.id + "'>" + city.name + "</option>");
+                        });
+          
+
+                    }
+                 
+                });
+
+
+            });
+
+
+            $('#PickUpCity').on('change', function () {
+
+                var center = $("#PickUpCenter");
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetCenters","Center")",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify($(this).val()),
+                    success: function (data) {
+                        debugger;
+                        center.empty();
+                        $.each(data, function (index, centers) {
+                            center.append("<option value='" + centers.id + "'>" + centers.name + "</option>");
+                        });
+
+
+                    }
+
+                });
+
+
+            });
+
+        });
+
+    </script>
+
+
+}
+
+

@@ -1,0 +1,47 @@
+﻿@model LoginViewModel
+
+<style>
+
+
+    .divider:after,
+    .divider:before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #eee;
+    }
+</style>
+
+<section class="vh-100">
+    <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+            <div class="col-md-8 col-lg-7 col-xl-6">
+                <img src="https://img.freepik.com/free-vector/computer-login-concept-illustration_114360-7962.jpg?w=740&t=st=1690899191~exp=1690899791~hmac=cacb027ec9e855ac3e86fbc254dd2933f823953ec16e8bbb37c372e80d577492"
+                     class="img-fluid" alt="Phone image">
+            </div>
+            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                @if (ViewBag.errormessage == false)
+                {
+                    <span class="text-danger">User name or password incorrect</span>
+                }
+                <form asp-action="Login">
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <input asp-for="Name"  type="text" id="form1Example13" class="form-control form-control-lg" />
+                        <label asp-for="Name" class="form-label" for="form1Example13">Email address</label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        <input asp-for="Password" type="password" id="form1Example23" class="form-control form-control-lg" />
+                        <label asp-for="Password" class="form-label" for="form1Example23">Password</label>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
