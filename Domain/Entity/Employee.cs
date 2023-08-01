@@ -19,7 +19,7 @@ namespace Domain.Entity
 
         [Required(ErrorMessage = "State Is Required")]
         public string State { get; set; }
-        [Required(ErrorMessage = "State Is Required")]
+        [Required(ErrorMessage = "SSN Is Required")]
         [RegularExpression(@"^\d{14}$", ErrorMessage = "The number must be 14 digits.")]
         [Remote("SSNIsAlreadyExist", "Employee", HttpMethod = "POST", ErrorMessage = "SSN already exists", AdditionalFields = "Id")]
         public string SSN { get; set; }
